@@ -1,0 +1,7 @@
+#labels Featured
+History
+
+2007-09-05
+---
+ * Added signals, now you don't need to write .save() and .delete() functions to create Change objects (not in svn yet)
+ * Bugfix: issue #1
