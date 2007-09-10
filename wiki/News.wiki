@@ -1,6 +1,8 @@
 #labels Featured
+=== 2007-09-10 ===
+ * r11: Issue #2, now we have a better sorting and filter, when you index a DateTimeField it will also create 3 additional fields: YEAR, MONTH and DAY
+
 === 2007-09-05 ===
 
  * r8: Added signals, now you don't need to write .save() and .delete() functions to create Change objects (I don't know why there's no Issue for it oO)
  * Bugfix: issue #1
-
