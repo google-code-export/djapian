@@ -1,4 +1,10 @@
 #labels Featured
+=== 2007-09-11 ===
+ * r13: Issue #3, you can set weight to fields
+ * Version 1.0.1 uploaded
+ * The test_djapian package is updated to version 1.0.1 too
+ * You don't need worrie about to do lots of update from version 1.0 to 1.0.1, only new features was made
+
 === 2007-09-10 ===
  * r11: Issue #2, now we have a better sorting and filter, when you index a DateTimeField it will also create 3 additional fields: YEAR, MONTH and DAY
 
