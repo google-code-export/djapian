@@ -1,6 +1,6 @@
 #labels Featured
 === 2007-10-31 ===
- * r21: Bugfix #6
+ * r21: Issue #6
  * Now you can search in multiple models, see the #6 for more details
 
 === 2007-09-11 ===
@@ -15,4 +15,4 @@
 === 2007-09-05 ===
 
  * r8: Added signals, now you don't need to write .save() and .delete() functions to create Change objects (I don't know why there's no Issue for it oO)
- * Bugfix: issue #1
+ * Bugfix: Issue #1
