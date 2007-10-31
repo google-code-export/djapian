@@ -1,4 +1,8 @@
 #labels Featured
+=== 2007-10-31 ===
+ * r21: Bugfix #6
+ * Now you can search in multiple models, see the #6 for more details
+
 === 2007-09-11 ===
  * r13: Issue #3, you can set weight to fields
  * Version 1.0.1 uploaded
