@@ -1,4 +1,7 @@
 #labels Featured
+=== 2007-11-06 ===
+ * r24: Fixed a problem which allows to insert the same database twice (in the Indexer.add_database) see Issue #6
+
 === 2007-10-31 ===
  * r21: Issue #6
  * Now you can search in multiple models, see the #6 for more details
