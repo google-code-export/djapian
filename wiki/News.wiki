@@ -1,4 +1,6 @@
 #labels Featured
+=== 2007-12-03 ===
+ * r25~r34: Fixed a problem that hang the daemon
 === 2007-11-06 ===
  * r24: Fixed a problem which allows to insert the same database twice (in the Indexer.add_database) see Issue #6
 
