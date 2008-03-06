@@ -1,0 +1,7 @@
+#summary This document explains the first steps required to use Djapian
+#labels Featured,Phase-Deploy
+
+= Installation =
+
+ * To install Xapian see InstallingXapian
+ * To install Djapian see InstallingDjapian
