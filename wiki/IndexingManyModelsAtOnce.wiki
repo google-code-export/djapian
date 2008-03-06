@@ -1,0 +1,70 @@
+#summary How to index data from many models at once.
+
+= Introduction =
+
+Suppose you have two models you need to index, Movie and Playlist, and would like to create a unique index for both models. Here's how to do it.
+
+= Some code =
+
+== SearchIndexData ==
+First, create a SearchIndexData class in your application's models.py file. This class will be used as a proxy for the models you want to index.
+
+{{{
+class SearchIndexData(models.Model):
+    """ This model holds a reference on all searchable items in
+        the database and is used for the integration with Djapian. """
+    # This class is a generic relation as described at
+    # http://www.djangoproject.com/documentation/0.96/models/generic_relations/
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = models.GenericForeignKey()
+    
+    # Integration with Djapian, an API to access the Xapian
+    # search engine with Django.
+    # http://code.google.com/p/djapian/
+    
+    DJANGO_PROJECT_NAME = 'your_project'
+    DJANGO_APPLICATION_NAME = 'your_appl'
+
+    index_model = "%s.%s.models.search_index" % (DJANGO_PROJECT_NAME, DJANGO_APPLICATION_NAME)
+
+    class Meta:
+        unique_together = (("content_type", "object_id"),)
+    
+    # Not editable via the administration interface.
+    #class Admin :
+    #    pass
+    
+    # Utilities
+    def _object_is_a(self, obj_model):
+        return self.content_type.app_label == self.DJANGO_PROJECT_NAME and self.content_type.model == obj_model
+    
+    def _object_is_in(self, obj_model_list):
+        return self.content_type.app_label == self.DJANGO_PROJECT_NAME and self.content_type.model in obj_model_list
+    
+    # Properties
+    # We use the content type framework (http://www.djangoproject.com/documentation/contenttypes/)
+    # The "content_object" is an instance of a particular model (for example Movie or Playlist)
+
+    @property
+    def title(self):
+        # Both Movie and Playlist models have the title attribute
+        if self._object_is_in(("movie", "playlist")):
+            return self.content_object.title
+        return None
+    
+    @property
+    def description(self):
+        # Both Movie and Playlist models have the title attribute
+        if self._object_is_in(("movie", "playlist")):
+            return self.content_object.description
+        return None
+
+    @property
+    def director(self):
+        # Only the Movie model has the get_director() attribute; calling this function
+        # for a Playlist instance will return None (and Djapian won't index the value)
+        if self._object_is_a("movie"):
+            return self.content_object.get_director()
+        return None
+}}}
