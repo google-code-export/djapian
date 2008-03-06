@@ -1,0 +1,6 @@
+#summary Documentation for some of the features of Djapian are listed on this page
+#labels Featured,Phase-Design
+
+= Documented features =
+
+ * SpellingSuggestions
