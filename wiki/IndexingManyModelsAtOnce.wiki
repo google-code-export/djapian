@@ -128,6 +128,14 @@ class Movie:
        save_model_into_search_index(self)
 }}}
 
+{{{
+class Playlist:
+   # ...
+   def save(self):
+       super(Playlist,self).save()
+       save_model_into_search_index(self)
+}}}
+
 == Saving the models from {{{SearchIndexData}}} ==
 
 The same thing must be done for the case where the different models to index are deleted :
@@ -150,6 +158,14 @@ class Movie:
    def delete(self):
         delete_model_from_search_index(self)
         super(Movie,self).delete()
+}}}
+
+{{{
+class Playlist:
+   # ...
+   def delete(self):
+        delete_model_from_search_index(self)
+        super(Playlist,self).delete()
 }}}
 
 = How will Djapian know that a new {{{SearchIndexData}}} was created or deleted? =
