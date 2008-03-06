@@ -16,12 +16,20 @@ Djapian is a program divided in three parts :
 
 == The Django application ==
 
-== The deamon ==
+== The daemon ==
 
 The daemon monitors the table djapian_change (defined in the models.py file of Djapian) at every 10 seconds (configurable) and update the index when an entry is found in the table.
 
-To invoke the deamon, the DJANGO_SETTINGS_MODULE variable must be set. Here is an invocation example :
+To invoke the deamon, the DJANGO_SETTINGS_MODULE variable must be set. Suppose you have a Django project called my_project installed in the /usr/share/my_project directory of your Web server. This is how run_djapian.py could be invoked :
 
 {{{
+env PYTHONPATH=$PYTHONPATH:/usr/share DJANGO_SETTINGS_MODULE=my_project.settings run_djapian.py -n -v
+}}}
 
+The -n option will run the daemon in foreground, and -v will print execution messages.
+
+To consult the program's help, invoke the program with -h :
+
+{{{
+env PYTHONPATH=$PYTHONPATH:/usr/share DJANGO_SETTINGS_MODULE=my_project.settings run_djapian.py -h
 }}}
