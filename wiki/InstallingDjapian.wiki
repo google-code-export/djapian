@@ -7,7 +7,7 @@ To install Djapian you'll need [InstallingXapian Xapian] installed and a [http:/
 Currently the only way to install Djapian is from the source in the SVN repository, I don't know why, but when I run `python setup.py sdist` on my machine it does not add the `backend` module in the package, but the install option do.
 
 {{{
-svn co svn checkout http://djapian.googlecode.com/svn/trunk/ djapian
+svn co http://djapian.googlecode.com/svn/trunk/ djapian
 }}}
 
 == Install Djapian ==
@@ -20,7 +20,5 @@ python setup.py install
 If you are using a shared server you can also pass a `--prefix=/path/to/your/home/python-2.X` and after set this as part of your PYTHONPATH (e.g. in the Apache configuration file or your settings.py file)
 
 Done, you now can use djapian, don't forget to [RunDjapian execute the `run_djapian.py`]
-
-
 
 
