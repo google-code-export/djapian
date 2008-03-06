@@ -9,3 +9,6 @@
 = Understanding Djapian =
 
 It is important to know how Djapian works to properly use it; see [Architecture].
+
+= Tips =
+ * IndexingManyModelsAtOnce
