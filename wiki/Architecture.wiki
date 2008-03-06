@@ -13,8 +13,10 @@ Djapian is a program divided in three parts :
  * The run_djapian.py daemon, used to monitor the changes on Django's database and to update the index accordingly.
 
 == The backend ==
+The backend is made of modules wrapping the Xapian API. It contains the XapianIndexer class which is used to create the search index. 
 
 == The Django application ==
+The Django application contains a model called Change. An entry in the change table is created each time the objects to index changes.
 
 == The daemon ==
 
@@ -25,6 +27,8 @@ To invoke the deamon, the DJANGO_SETTINGS_MODULE variable must be set. Suppose y
 {{{
 env PYTHONPATH=$PYTHONPATH:/usr/share DJANGO_SETTINGS_MODULE=my_project.settings run_djapian.py -n -v
 }}}
+
+Replace "/usr/share" with the parent directory containing your Django project and "my_project" with the name of the directory that contains your project.
 
 The -n option will run the daemon in foreground, and -v will print execution messages.
 
