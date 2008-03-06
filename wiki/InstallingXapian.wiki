@@ -11,6 +11,16 @@ This page cover how to install Xapian and Xapian bindings 1.0.2 in your machine
  * Python shared (default in Linux, but *not* in Freebsd)
 = Install =
 
+== From packages ==
+There are a very good "How to install" packages in Xapian website: 
+http://xapian.org/download.php
+
+=== For Ubuntu ===
+The version required to properly run Djapian (Xapian >=1.0.2) is found in Ubuntu Gutsy and upward :
+{{{
+ sudo apt-get install python-xapian xapian-tools
+}}}
+
 == From source ==
 
 === Xapian Core ===
@@ -35,7 +45,3 @@ make
 su
 make install
 }}}
-
-== From packages ==
-There are a very good "How to install" packages in Xapian website: 
-http://xapian.org/download.php
