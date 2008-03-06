@@ -40,10 +40,10 @@ class SearchIndexData(models.Model):
     
     # Utilities
     def _object_is_a(self, obj_model):
-        return self.content_type.app_label == self.DJANGO_PROJECT_NAME and self.content_type.model == obj_model
+        return self.content_type.app_label == self.DJANGO_APPLICATION_NAME and self.content_type.model == obj_model
     
     def _object_is_in(self, obj_model_list):
-        return self.content_type.app_label == self.DJANGO_PROJECT_NAME and self.content_type.model in obj_model_list
+        return self.content_type.app_label == self.DJANGO_APPLICATION_NAME and self.content_type.model in obj_model_list
     
     # Properties
     # We use the content type framework (http://www.djangoproject.com/documentation/contenttypes/)
