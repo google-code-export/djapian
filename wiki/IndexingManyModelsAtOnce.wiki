@@ -6,10 +6,13 @@ Suppose you have two models you need to index, Movie and Playlist, and would lik
 
 = Some code =
 
-== SearchIndexData ==
-First, create a SearchIndexData class in your application's models.py file. This class will be used as a proxy for the models you want to index.
+== {{{SearchIndexData}}} ==
+First, create a {{{SearchIndexData}}} class in your application's models.py file. This class will be used as a proxy for the models you want to index.
 
 {{{
+from django.db import models
+from django.contrib.contenttypes.models import ContentType
+
 class SearchIndexData(models.Model):
     """ This model holds a reference on all searchable items in
         the database and is used for the integration with Djapian. """
@@ -67,4 +70,61 @@ class SearchIndexData(models.Model):
         if self._object_is_a("movie"):
             return self.content_object.get_director()
         return None
+}}}
+
+== {{{search_index}}} instance of {{{XapianIndexer}}} ==
+
+Then, we need to create a {{{search_index}}} instance of the {{{XapianIndexer}}} class, so we can tell Djapian where to locate the database on the hard drive, what model to index, and what fields of the model to index.
+
+{{{
+from djapian.backend.backends import XapianIndexer
+from django.conf import settings
+
+search_index = XapianIndexer(
+    # Path where the index database is
+    # For this to work add a line similar to this in your settings.py file :
+    # XAPIAN_INDEX_DIRECTORY = "/var/myproject/xapian_index"
+    settings.XAPIAN_INDEX_DIRECTORY,
+    
+    # Model to index
+    SearchIndexData,
+    
+    # Fields to index without a prefix
+    # We can limit the number of characters indexed with the following syntax :
+    # ('SearchIndexData.title', 20) instead of 'SearchIndexData.title'
+    ['SearchIndexData.title', 'SearchIndexData.description', 'SearchIndexData.director'],
+    
+    # Attributes with prefix, to search like Google "title:Foobar"
+    {
+        'title':'SearchIndexData.title',
+        'desc':'SearchIndexData.description',
+        'director':'SearchIndexData.director',
+    }
+)
+}}}
+
+== Saving the models into {{SearchIndexData}}} ==
+
+We then need to modify the save() methods of the Movie and Playlist classes so that a SearchIndexData instance can be created each time our objects are modified. 
+
+{{{
+def save_model_into_search_index(model_instance):
+    """ save a model instance into the SearchIndexData """
+    ctype = ContentType.objects.get_for_model(model_instance)
+    (search_index_data, was_created) = SearchIndexData.objects.get_or_create(\
+        content_type=ctype, object_id=model_instance.id, \
+        defaults={'content_object':model_instance})
+    # We must make sure to save the object in order to trigger 
+    # the update of the index
+    if not was_created:
+        search_index_data.save()
+}}}
+
+{{{
+class Movie:
+   # ...
+   def save(self):
+       # ...
+       super(Movie,self).save()
+       save_model_into_search_index(self)
 }}}
