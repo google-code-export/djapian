@@ -4,7 +4,7 @@
 
 Suppose you have two models you need to index, Movie and Playlist, and would like to create a unique index for both models. Here's how to do it.
 
-= Some code =
+= The code =
 
 == {{{SearchIndexData}}} ==
 First, create a {{{SearchIndexData}}} class in your application's models.py file. This class will be used as a proxy for the models you want to index.
@@ -103,9 +103,9 @@ search_index = XapianIndexer(
 )
 }}}
 
-== Saving the models into {{SearchIndexData}}} ==
+== Saving the models into {{{SearchIndexData}}} ==
 
-We then need to modify the save() methods of the Movie and Playlist classes so that a SearchIndexData instance can be created each time our objects are modified. 
+We then need to modify the save() methods of the Movie and Playlist classes so that a {{{SearchIndexData}}} instance can be created each time our objects are modified. 
 
 {{{
 def save_model_into_search_index(model_instance):
