@@ -5,3 +5,7 @@
 
  * To install Xapian see InstallingXapian
  * To install Djapian see InstallingDjapian
+
+= Understanding Djapian =
+
+It is important to know how Djapian works to properly use it; see Architecture.
