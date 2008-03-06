@@ -124,7 +124,35 @@ def save_model_into_search_index(model_instance):
 class Movie:
    # ...
    def save(self):
-       # ...
        super(Movie,self).save()
        save_model_into_search_index(self)
 }}}
+
+== Saving the models from {{{SearchIndexData}}} ==
+
+The same thing must be done for the case where the different models to index are deleted :
+
+{{{
+def delete_model_from_search_index(model_instance):
+    """ delete a model instance from the SearchIndexData """
+    ctype = ContentType.objects.get_for_model(model_instance)
+    try:
+        search_index_data = SearchIndexData.objects.get(\
+            content_type=ctype, object_id=model_instance.id)
+        search_index_data.delete()
+    except SearchIndexData.DoesNotExist:
+        pass
+}}}
+
+{{{
+class Movie:
+   # ...
+   def delete(self):
+        delete_model_from_search_index(self)
+        super(Movie,self).delete()
+}}}
+
+= How will Djapian know that a new {{{SearchIndexData}}} was created or deleted? =
+This is thanks to the {{{XapianIndexer}}} instance we create in our model. The constructor of {{{XapianIndexer}}} connects the {{{post_save}}} and {{{pre_delete}}} signals to the methods defined in signals.py; these methods update the Change model of Djapian with a reference to the model that was saved or deleted.
+
+Then, run_djapian.py will detect a new entry in the Change database, and will update Xapian's index accordingly.
