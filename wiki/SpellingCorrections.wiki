@@ -1,0 +1,18 @@
+#summary How to use Xapian's spelling correction feature within Djapian
+
+= Using the spelling correction feature of Xapian with Djapian =
+
+Here is a code example. This code could be placed inside a view in your Django project, for example.
+
+{{{
+from your.models import search_index
+from xapian import QueryParser
+
+# As defined at http://www.xapian.org/docs/apidoc/html/classXapian_1_1QueryParser.html
+search_flags = QueryParser.FLAG_PHRASE | QueryParser.FLAG_BOOLEAN | \
+               QueryParser.FLAG_LOVEHATE | QueryParser.FLAG_WILDCARD | \
+               QueryParser.FLAG_SPELLING_CORRECTION
+    
+results = search_index.search("What to search", flags=search_flags)
+corrected_query = search_index.get_corrected_query_string()
+}}}
