@@ -1,0 +1,27 @@
+#summary The different components of Djapian
+
+= Foreword =
+
+To better understand how Djapian works, it is suggested to read how Xapian itself works first. You can look at [http://www.xapian.org/docs/ Xapian's documentation], especially at
+the [http://www.xapian.org/docs/quickstart.html quickstart], the [http://www.xapian.org/docs/glossary.html glossary] and the [http://www.xapian.org/docs/overview.html overview].
+
+= Djapian's architecture =
+
+Djapian is a program divided in three parts :
+ * The Djapian backend, which is used to describe the index to create and to search in this index;
+ * The Djapian Django application, which describe model used to monitor the changes on the model to index;
+ * The run_djapian.py daemon, used to monitor the changes on Django's database and to update the index accordingly.
+
+== The backend ==
+
+== The Django application ==
+
+== The deamon ==
+
+The daemon monitors the table djapian_change (defined in the models.py file of Djapian) at every 10 seconds (configurable) and update the index when an entry is found in the table.
+
+To invoke the deamon, the DJANGO_SETTINGS_MODULE variable must be set. Here is an invocation example :
+
+{{{
+
+}}}
