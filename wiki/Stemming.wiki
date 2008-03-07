@@ -1,0 +1,25 @@
+#summary How to use stemming (searching for the root of a word)
+
+= Introduction =
+
+Stemming is the action of reducing a word to it's root. For instance, the words connection, connections,
+connective, connected and connecting can all be reduced to a common root "connect". For more
+information, see [http://www.xapian.org/docs/stemming.html this document].
+
+This feature is available in Djapian since SVN revision 67.
+
+= Stemming in Djapian =
+
+To use stemming in Djapian, you must first define a variable in the settings.py file of your Django project:
+
+{{{
+# For a complete list of supported languages, see :
+# http://www.xapian.org/docs/apidoc/html/classXapian_1_1Stem.html#d4adbe1617ce7c54c3aa7d3d67d407bd
+DJAPIAN_STEMMING_LANG = "en"
+}}}
+
+That's all there is to do. When Djapian detects the DJAPIAN_STEMMING_LANG is defined, it will use stemming when indexing the documents, and will stem the search query.
+
+*Important* : For stemming to work, the index must be build with stemming enabled. You may have to rebuild your index if it was not build with stemming.
+
+For now, Djapian supports only one language for stemming. Per-document language support will be added soon.
