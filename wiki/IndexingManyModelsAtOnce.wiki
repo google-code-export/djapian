@@ -136,7 +136,7 @@ class Playlist:
        save_model_into_search_index(self)
 }}}
 
-== Saving the models from {{{SearchIndexData}}} ==
+== Deleting the models from {{{SearchIndexData}}} ==
 
 The same thing must be done for the case where the different models to index are deleted :
 
