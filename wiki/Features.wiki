@@ -4,3 +4,4 @@
 = Documented features =
 
  * SpellingCorrections
+ * [Stemming]
