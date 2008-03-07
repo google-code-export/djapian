@@ -1,4 +1,4 @@
-#summary How to use stemming (searching for the root of a word)
+#summary How to use stemming (enabling to search the plural form and get results for the singular form, etc.)
 
 = Introduction =
 
@@ -23,3 +23,62 @@ That's all there is to do. When Djapian detects the DJAPIAN_STEMMING_LANG is def
 *Important* : For stemming to work, the index must be build with stemming enabled. You may have to rebuild your index if it was not build with stemming.
 
 For now, Djapian supports only one language for stemming. Per-document language support will be added soon.
+
+= Implementation notes =
+
+== Xapian's stemming API -­ A simple program ==
+This simple Python code illustrates how Xapian's stemming API works :
+
+{{{
+import xapian
+st = xapian.Stem("en") # or "fr" or any other supported language
+print st("dogs"), st("are"), st("running")
+}}}
+
+This program will print out "dog are run" on the standard output. To stem a word we use the operator ()
+on an instance of the class Stem. This explain the strange syntax of {{{st("dogs")}}} to get the stem of the
+word "dogs".
+
+== Stemming the search query ==
+The QueryParser class in Xapian is used to parse a query entered by the user into Query object that
+Xapian can understand. For instance, the following query:
+
+ Who let the dogs out?
+
+Results in the following Query object:
+
+{{{
+QUERY: Xapian::Query((who:(pos=1) AND let:(pos=2) AND the:(pos=3) AND dogs:(pos=4) AND out:(pos=5)))
+}}}
+
+When using a stemming algorithm, the resulting Query object is the following:
+
+{{{
+QUERY: Xapian::Query((who:(pos=1) AND Zlet:(pos=2) AND Zthe:(pos=3) AND Zdog:(pos=4) AND Zout:(pos=5))
+}}}
+
+Observe that the word "dogs" was reduced to it's root "dog", and that all words excepted the first are now prefixed with a capital Z. This mean that in order to use stemming, the database must also be constructed with stemmed words prefixed with capital Z.
+
+=== Code example ===
+This code will create a stemmed query, like the example in the previous section. This code is currently implemented in the parse_query function of XapianIndexer in xap.py.
+
+{{{
+import xapian
+query_parser = xapian.QueryParser()
+query_parser.set_default_op(xapian.Query.OP_AND)
+query_parser.set_stemmer(xapian.Stem("en"))
+query_parser.set_stemming_strategy(xapian.QueryParser.STEM_SOME)
+parsed_query = query_parser.parse_query("Who let the dogs out?")
+print parsed_query
+}}}
+
+== Stemming at indexation time ==
+In order to support both stemmed and non-stemmed search queries, Djapian indexes documents with both stemmed and non-stemmed forms. For instance, the following phrase :
+
+ Who let the dogs out?
+
+Would result in the following terms being indexed :
+
+ who let the dogs out Zwho Zlet Zthe Zdog Zout
+
+This is performed in the update() function of XapianIndexer in xap.py.
