@@ -5,3 +5,4 @@
 
  * SpellingCorrections
  * [Stemming]
+ * IndexingManyModelsAtOnce
