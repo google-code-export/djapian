@@ -84,18 +84,18 @@ search_index = XapianIndexer(
     # Path where the index database is
     # For this to work add a line similar to this in your settings.py file :
     # XAPIAN_INDEX_DIRECTORY = "/var/myproject/xapian_index"
-    settings.XAPIAN_INDEX_DIRECTORY,
+    path = settings.XAPIAN_INDEX_DIRECTORY,
     
     # Model to index
-    SearchIndexData,
+    model = SearchIndexData,
     
     # Fields to index without a prefix
     # We can limit the number of characters indexed with the following syntax :
     # ('SearchIndexData.title', 20) instead of 'SearchIndexData.title'
-    ['SearchIndexData.title', 'SearchIndexData.description', 'SearchIndexData.director'],
+    fields = ['SearchIndexData.title', 'SearchIndexData.description', 'SearchIndexData.director'],
     
     # Attributes with prefix, to search like Google "title:Foobar"
-    {
+    attributes = {
         'title':'SearchIndexData.title',
         'desc':'SearchIndexData.description',
         'director':'SearchIndexData.director',
