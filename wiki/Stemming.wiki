@@ -36,6 +36,8 @@ To enable multiple-language support in Djapian, set the {{{DJAPIAN_STEMMING_LANG
 DJAPIAN_STEMMING_LANG = "multi"
 }}}
 
+Multiple-language support is available in Djapian since SVN revision 77.
+
 === Selecting the language to use when indexing documents ===
 
 When {{{DJAPIAN_STEMMING_LANG}}} is defined as {{{"multi"}}}, Djapian is able to use a different language to stem each document (each database entry) to index. The language to use is obtained from the document to index, by calling {{{"get_stemming_lang"}}} on the model. If the method is not defined, the document is simply not stemmed. 
