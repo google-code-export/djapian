@@ -22,18 +22,15 @@ The Django application contains a model called Change. An entry in the change ta
 
 The daemon monitors the table djapian_change (defined in the models.py file of Djapian) at every 10 seconds (configurable) and update the index when an entry is found in the table.
 
-To invoke the deamon, the DJANGO_SETTINGS_MODULE variable must be set. Suppose you have a Django project called my_project installed in the /usr/share/my_project directory of your Web server. This is how run_djapian.py could be invoked :
+To invoke the deamon, suppose you have a Django project called my_project installed in the /usr/share/my_project directory of your Web server. This is how could be invoked `index` process:
 
 {{{
-env PYTHONPATH=$PYTHONPATH:/usr/share DJANGO_SETTINGS_MODULE=my_project.settings run_djapian.py -n -v
+cd /usr/share/my_project
+./manage.py index
 }}}
 
 Replace "/usr/share" with the parent directory containing your Django project and "my_project" with the name of the directory that contains your project.
 
-The -n option will run the daemon in foreground, and -v will print execution messages.
+The `-no-fork` option will run the daemon in foreground, and `-verbose` will print execution messages.
 
-To consult the program's help, invoke the program with -h :
-
-{{{
-env PYTHONPATH=$PYTHONPATH:/usr/share DJANGO_SETTINGS_MODULE=my_project.settings run_djapian.py -h
-}}}
+To consult the program's help, invoke the program with `-h`.
