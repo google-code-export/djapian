@@ -31,6 +31,6 @@ cd /usr/share/my_project
 
 Replace "/usr/share" with the parent directory containing your Django project and "my_project" with the name of the directory that contains your project.
 
-The `-no-fork` option will run the daemon in foreground, and `-verbose` will print execution messages.
+The `--no-fork` option will run the daemon in foreground, and `--verbose` will print execution messages.
 
 To consult the program's help, invoke the program with `-h`.
