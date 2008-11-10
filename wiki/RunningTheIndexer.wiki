@@ -1,0 +1,6 @@
+#summary How to run the indexer
+
+After setup the project and configure the models, you just need to run:
+ `python manage.py index`
+
+And it will wait for changes in the models and update the index database
