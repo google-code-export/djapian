@@ -1,6 +1,4 @@
 #labels Phase-Deploy
-#How to setup the Djapian into your project
-
 Before continue reading, make sure that you already have `djapian` installed (InstallingDjapian)
 
 = Introduction =
