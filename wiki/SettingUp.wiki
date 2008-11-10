@@ -1,0 +1,15 @@
+#labels Phase-Deploy
+#How to setup the Djapian into your project
+
+Before continue reading, make sure that you already have `djapian` installed (InstallingDjapian)
+
+= Introduction =
+
+To setup the Djapian into your project follow this steps
+
+ * Add `djapian` into your `INSTALLED_APPS`
+ * Run `python manage.py syncdb`
+
+That's it :)
+
+Now you need setup your models, that is here: SettingUpModels
