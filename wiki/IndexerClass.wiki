@@ -1,5 +1,7 @@
 #summary Description of each parameter of `Indexer` class
 
+= Parameters =
+
 The `Indexer` class accept the followings parameters:
 
  * Default parameters
