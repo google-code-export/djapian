@@ -1,3 +1,6 @@
+=== 2008-11-10 ===
+ * No, the project is not dead, we just don't update this page so much :P
+
 === 2007-12-03 ===
  * r25~r34: Fixed a problem that hang the daemon
 === 2007-11-06 ===
