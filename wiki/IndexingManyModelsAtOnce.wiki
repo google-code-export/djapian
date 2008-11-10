@@ -22,14 +22,8 @@ class SearchIndexData(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = models.GenericForeignKey()
     
-    # Integration with Djapian, an API to access the Xapian
-    # search engine with Django.
-    # http://code.google.com/p/djapian/
-    
     DJANGO_PROJECT_NAME = 'your_project'
     DJANGO_APPLICATION_NAME = 'your_appl'
-
-    index_model = "%s.%s.models.search_index" % (DJANGO_PROJECT_NAME, DJANGO_APPLICATION_NAME)
 
     class Meta:
         unique_together = (("content_type", "object_id"),)
@@ -72,19 +66,19 @@ class SearchIndexData(models.Model):
         return None
 }}}
 
-== {{{search_index}}} instance of {{{XapianIndexer}}} ==
+== {{{search_index}}} instance of {{{Indexer}}} ==
 
-Then, we need to create a {{{search_index}}} instance of the {{{XapianIndexer}}} class, so we can tell Djapian where to locate the database on the hard drive, what model to index, and what fields of the model to index.
+Then, we need to create a {{{search_index}}} instance of the {{{Indexer}}} class, so we can tell Djapian where to locate the database on the hard drive, what model to index, and what fields of the model to index.
 
 {{{
-from djapian.backend.backends import XapianIndexer
+from djapian.indexer import Indexer
 from django.conf import settings
 
-search_index = XapianIndexer(
-    # Path where the index database is
+search_index = Indexer(
+    # Path where the index database is (optional)
     # For this to work add a line similar to this in your settings.py file :
     # XAPIAN_INDEX_DIRECTORY = "/var/myproject/xapian_index"
-    path = settings.XAPIAN_INDEX_DIRECTORY,
+    # path = settings.XAPIAN_INDEX_DIRECTORY,
     
     # Model to index
     model = SearchIndexData,
@@ -92,16 +86,22 @@ search_index = XapianIndexer(
     # Fields to index without a prefix
     # We can limit the number of characters indexed with the following syntax :
     # ('SearchIndexData.title', 20) instead of 'SearchIndexData.title'
-    fields = ['SearchIndexData.title', 'SearchIndexData.description', 'SearchIndexData.director'],
+    fields = [
+        'title', 
+        'description', 
+        'director'
+    ],
     
     # Attributes with prefix, to search like Google "title:Foobar"
-    attributes = {
-        'title':'SearchIndexData.title',
-        'desc':'SearchIndexData.description',
-        'director':'SearchIndexData.director',
-    }
+    tags = [
+        ('title','title'),
+        ('desc','description'),
+        ('director','director')
+    ]
 )
 }}}
+
+For a detailed description of {{{Indexer}}} class, go to IndexerClass.
 
 == Saving the models into {{{SearchIndexData}}} ==
 
