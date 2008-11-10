@@ -1,0 +1,47 @@
+#labels Phase-Deploy
+Before continue reading, make sure that you already have setup the Djapian project (SettingUp)
+
+= Introduction =
+In order to set who must be indexed, you have to add some lines into your `models.py`, just like follows.
+
+Lets get this model as example:
+
+{{{
+from django.db import models
+
+class Page(models.Model):
+    title = models.CharField()
+    content = models.TextField()
+
+}}}
+
+To index this model, you have to create an `djapian.indexer.Indexer` instance, but first, lets import the class:
+
+{{{
+from django.db import Model
+from djapian.indexer import Indexer 
+}}}
+
+And now, we create the `Indexer` instance (but, just after the `class Page`):
+{{{
+class Page(models.Model):
+    title = models.CharField()
+    content = models.TextField()
+
+page_indexer = Indexer(
+    model = Page, # What model will be indexed
+    fields = [
+        'title',
+        'content'
+    ], # The fields in the model to index
+    tags = [ # The prefixed fields, more information in IndexerClass page
+        ('title','title')
+    ]
+)
+}}}
+
+Look at IndexerClass to advanced configuration of `Indexer` instance.
+
+*Note*: You can create as many `Indexer` instances as you wish, but not (yet?) more than one model per `Indexer`.
+
+After configure the `models.py`, you can put the whole thing to work by RunningTheIndexer
