@@ -1,4 +1,5 @@
 #summary How to index data from many models at once.
+#labels Deprecated
 
 = Introduction =
 
