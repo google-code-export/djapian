@@ -1,9 +1,9 @@
 #labels Featured,Phase-Deploy
 # How to install Djapian application
 
-= Instructions =
+= Instruction =
 
-*Notice:* Before starting Djapian installation be sure that you have Xapian already installed or reed InstalligXapian
+*Notice:* Before starting Djapian installation be sure that you have Xapian already installed or read InstallingXapian
 
 To install Djapian you'll have to choice on of this available ways:
 
