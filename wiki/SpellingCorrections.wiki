@@ -2,17 +2,14 @@
 
 = Using the spelling correction feature of Xapian with Djapian =
 
-Here is a code example. This code could be placed inside a view in your Django project, for example.
+Djapian provides the way to retrieve spelling corrected version of the query string. It may be useful for something list "Do you mean ..." suggestion.
+
+To get corrected query string you have to call `search` and then enable spelling correction with `spell_correction` method.
+
+Here is a code example:
 
 {{{
-from your.models import search_index
-from xapian import QueryParser
-
-# As defined at http://www.xapian.org/docs/apidoc/html/classXapian_1_1QueryParser.html
-search_flags = QueryParser.FLAG_PHRASE | QueryParser.FLAG_BOOLEAN | \
-               QueryParser.FLAG_LOVEHATE | QueryParser.FLAG_WILDCARD | \
-               QueryParser.FLAG_SPELLING_CORRECTION
-    
-results = search_index.search("What to search", flags=search_flags)
-corrected_query = search_index.get_corrected_query_string()
+>>> result = Entry.indexer.search("texte").spell_correctio()
+>>> result.get_corrected_query_string()
+text
 }}}
