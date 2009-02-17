@@ -1,4 +1,4 @@
-# Description of indexshell command
+#Description of indexshell command
 
 `indexshell` provides an interface to monitoring indexes status. It allows to query, list and delete document from index. View index status and data associated with each document.
 
