@@ -12,7 +12,7 @@ connecting
 }}}
 can all be reduced to a common root "connect". For more information, see [http://www.xapian.org/docs/stemming.html this document].
 
-This feature is available in Djapian since SVN revision 67 (and future release 0.9).
+This feature is available in Djapian since 2.0 release.
 
 = Stemming in Djapian =
 
@@ -58,7 +58,7 @@ class Movie(models.Model):
 You can change the name of this method by changing the parameter {{{lang_accessor}}} when constructing the XapianIndexer instance in your models file. For instance :
 
 {{{
-class Movie:
+class Movie(models.Model):
     # ...
     lang = models.CharFields(maxlength=2)
     # ...
@@ -66,17 +66,19 @@ class Movie:
     def get_lang(self):
         return self.lang
 
-from djapian.backend.backends import XapianIndexer
+import djapian
 
-search_index = XapianIndexer(
-    path = "/var/xapianindex",
-    model = Movie,
-    fields = ['Movie.title', 'Movie.description', 'Movie.language'],
-    attributes = {'title':'Movie.title'},
+class XapianIndexer(djapian.Indexer):
+    fields = ['description', 'language'],
+    tags = [
+       ('title', 'title'),
+    ]
 
     # Method to be called on the model to get the language code for stemming
     stemming_lang_accessor = "get_lang" # By default, "get_stemming_lang"
 )
+
+search_index = djapian.add_index(Movie, XapianIndexer, attach_as="indexer")
 }}}
 
 === Selecting the language to use when making a query ===
@@ -86,7 +88,7 @@ You can specify the language to use when searching the index with the {{{stemmin
 {{{
 from myappl.models import search_index
 
-results = search_index.search(search_query="Some search query...", stemming_lang="fr")
+results = search_index.search(search_query="Some search query...")
 }}}
 
 ==== Relation with the {{{DJAPIAN_STEMMING_LANG}}} setting ====
@@ -155,5 +157,3 @@ In order to support both stemmed and non-stemmed search queries, Djapian indexes
 Results in the following terms to be indexed :
 
  who let the dogs out Zwho Zlet Zthe Zdog Zout
-
-This is performed in the {{{update()}}} function of {{{XapianIndexer}}} in {{{xap.py}}}.
