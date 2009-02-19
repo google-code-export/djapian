@@ -23,7 +23,7 @@ from django.db import models
 import djapian 
 }}}
 
-And now, we create the `Indexer` sublass (but, just after the `class Page`):
+And now, we create the `Indexer` subclass (but, just after the `class Page`):
 {{{
 class Page(models.Model):
     title = models.CharField()
