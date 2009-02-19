@@ -6,7 +6,7 @@ Before continue reading, make sure that you already have `djapian` installed (In
 To setup the Djapian into your project follow this steps
 
  * Add `djapian` into your `INSTALLED_APPS`
- * Set `DJAPIAN_DATABASE_PATH` in `settings.py`, this will set where indexes must be created
+ * Set options into [Settings `settings.py`]
  * Run `python manage.py syncdb`
 
 That's it :)
