@@ -12,7 +12,6 @@ from django.db import models
 class Page(models.Model):
     title = models.CharField()
     content = models.TextField()
-
 }}}
 
 To index this model, you have to create an `djapian.indexer.Indexer` instance, but first, lets import the class:
