@@ -1,4 +1,6 @@
+#summary how to define indexer for certain model
 #labels Phase-Deploy
+
 Before continue reading, make sure that you already have setup the Djapian project (SettingUp)
 
 = Introduction =
