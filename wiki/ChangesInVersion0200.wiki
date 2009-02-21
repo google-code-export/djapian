@@ -1,3 +1,5 @@
+#summary 2.0 version release notes
+#labels Featured
 
 == Changes in Djapian 2.0 ==
 
