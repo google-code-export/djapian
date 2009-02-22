@@ -76,7 +76,6 @@ class XapianIndexer(djapian.Indexer):
 
     # Method to be called on the model to get the language code for stemming
     stemming_lang_accessor = "get_lang" # By default, "get_stemming_lang"
-)
 
 search_index = djapian.add_index(Movie, XapianIndexer, attach_as="indexer")
 }}}
