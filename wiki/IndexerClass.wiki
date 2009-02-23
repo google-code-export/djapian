@@ -6,7 +6,6 @@
 The `Indexer` class accept the followings parameters:
 
  * Default parameters
-   * `model` - Required -  The model that will be indexed
    * `fields` - Optional - List with the fields in the model to index, all the fields must be a string
    * `tags` - Optional - List with tuples of fields to index, the tuples are 2 or 3 fields with the following information: `('prefix','field',weight)` (See below for more information about `weight`)
 
@@ -14,7 +13,6 @@ The `Indexer` class accept the followings parameters:
    * `path` - Change the default location where the database must be stored
    * `stemming_lang_accessor` - Used by Xapian to Stem the words, more information at http://www.xapian.org/docs/stemming.html and [Stemming Stemming]
    * `trigger` - Function that return a boolean value to decide if the record must be indexed or not (usefull when you don't want index "private" information)
-   * `model_attr_name` - Name of the attribute that will be created on the model in order to allow index and search records, defaults to 'indexer', this attribute also allows you to have more than one `Indexer` instance per model
    * `aliases` - Allows you have aliases to your tags, like 'titulo' in portuguese could be an alias to 'title' in english
 
 = Little FAQ =
