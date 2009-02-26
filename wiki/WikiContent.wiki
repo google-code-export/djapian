@@ -1,12 +1,13 @@
+#labels Deprecated
 === Step-by-step ===
 
- - SettingUp
- - SettingUpModels
- - RunningTheIndexer
- - Searching
+ * SettingUp
+ * SettingUpModels
+ * RunningTheIndexer
+ * [Searching]
 
 === References ===
 
- - Settings
- - IndexerClass
- - Stemming
+ * [Settings]
+ * IndexerClass
+ * [Stemming]
