@@ -41,4 +41,4 @@ Then configure your `PYTHON_PATH` environment variable to include "_/path/to/che
 
 Djapian can also be obtained from PyPi repository:
 
-http://pypi.python.org/pypi/Djapian/2.0
+http://pypi.python.org/pypi/Djapian
