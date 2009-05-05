@@ -11,3 +11,10 @@
  * [Settings]
  * IndexerClass
  * [Stemming]
+
+=== Release Notes ===
+
+ * [ChangesInVersion020201 2.2.1]
+ * [ChangesInVersion0202 2.2]
+ * [ChangesInVersion0201 2.1]
+ * [ChangesInVersion0200 2.0]
