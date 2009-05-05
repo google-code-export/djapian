@@ -1,7 +1,7 @@
-#summary 2.2 version release notes
+#summary 2.2.1 version release notes
 #labels Featured
 
-== Changes in Djapian 2.2 ==
+== Changes in Djapian 2.2.1 ==
 
  * Added additional `index` commands parameters to enable transactions and flushing
 
