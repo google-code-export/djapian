@@ -1,0 +1,11 @@
+#summary 2.2 version release notes
+#labels Featured
+
+== Changes in Djapian 2.2 ==
+
+ * Added additional `index` commands parameters to enable transactions and flushing
+
+=== Major bug fixes ===
+
+ * Large update queues now split by pages for less memory consumption
+ * Disabled Xapian transactions by default - for index performance reasons
