@@ -1,5 +1,4 @@
 #summary 2.2.2 version release notes
-#labels Featured
 
 == Changes in Djapian 2.2.2 ==
 
