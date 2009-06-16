@@ -1,7 +1,7 @@
 #summary project initial setup
 #labels Phase-Deploy,Featured
 
-Before continue reading, make sure that you already have `djapian` installed (InstallingDjapian)
+Before continue reading, make sure that you already have `djapian` installed (Installation)
 
 = Introduction =
 
