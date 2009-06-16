@@ -1,7 +1,7 @@
 #labels Deprecated
 === Step-by-step ===
 
- * Installation
+ * [Installation]
  * SettingUp
  * SettingUpModels
  * RunningTheIndexer
