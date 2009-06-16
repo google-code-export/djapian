@@ -6,12 +6,15 @@ Most of the features provided by Xapian itself and Djapian in this case plays ro
 == Djapian features ==
 
  * High-level DSL for indexer declaration
- * Standard result pagination support
+ * Result set compatible with standard Django `Paginator`
  * Indexing of field, method results and related model attributes
- * Entry filtering (by trigger function) 
+ * Entry filtering (by trigger function)
+ * Results filtering with boolean lookups support
  * Term tagging
  * Spelling corrections
  * Stemming
  * Result ordering by fields
  * Indexers auto discovery
  * Index shell
+ * Model changes auto tracking
+ * Support for different index spaces
