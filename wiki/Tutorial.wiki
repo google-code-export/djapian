@@ -1,11 +1,11 @@
-#summary Tutorial with example application creation and applying Djapian
+#summary Tutorial for applying Djapian on example application 
 #labels Deprecated
 
 == Introduction ==
 
 Djapian provides simple way to apply full-text search to your exist applications and new ones. It has django-inspired style of API with flexible customizations of indexation and searching.
 
-Let's go step-by-step through application creation process and discover Djapian basics. Before we start be sure that you have Djapian installed. If note read the complete guide to [Installation].
+Let's go step-by-step through application creation process and discover Djapian basics. Before we start be sure that you have Djapian installed. If no read the complete guide to [Installation].
 
 == Sample application ==
 
@@ -39,7 +39,7 @@ class Comment(models.Model):
 
 And as every well crafted blog we want to add flexible search mechanism. For this purpose we will use Djapian.
 
-== Creating indexer ==
+== Creating indexers ==
 
 First step is to describe how will your search indexes represent blog models. For that we have to write some classes derived from `djapian.Indexer` with index definitions and that ad it to global or our custom _index space_.  
 
@@ -79,7 +79,7 @@ space.add_index(Comment, CommentIndexer)
 
 To complete `Indexer` class reference read - IndexerClass.
 
-The great feature provided by Djapian - `CompositeIndexer`. This type of indexer allows you to make search queries to multiple indexes at one and get consistent result raking. For our blog application we join all tree just created indexer for composite - `blog_indexer`:
+The great feature provided by Djapian - `CompositeIndexer`. This type of indexer allows you to make search queries to multiple indexes at one and get consistent result raking. For our blog application we join all tree just created indexer for composite `blog_indexer`:
  
 {{{
 blog_indexer = CompositeIndexer(Category.indexer, Post.indexer, Comment.indexer)
@@ -155,5 +155,32 @@ def search(request):
 }}}
 
 == Adding pagination ==
+
+Due to Djapian's `ResultSet` object compatible with standard `Paginator` it allows you to paginate results as usual.
+
+Let's update search view to apply page number and splitting result set into pages with 10 entries on each:
+
+{{{
+from django.core.paginator import Paginator
+...
+paginator = Paginator(form.do_search(), 10)
+results = paginator.page(request.GET.get('page', 1))
+}}}
+
+And we have to update template as well:
+
+{{{
+...
+<ol start={{ results.start_index }}>
+   {% for hit in results.object_list %}
+       <li>{{ hit.instance }}- {{ hit.percent }} match</li>
+   {% endfor %}
+</ol>
+{% if results.has_next }}
+<a href="./?query={{ form.cleaned_data.query }}&page={{ results.next_page }}">Next page</a>
+{% endif %}
+}}}
+
+== Starting index daemon ==
 
 == Conclusion ==
