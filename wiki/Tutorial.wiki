@@ -1,13 +1,13 @@
 #summary Tutorial with example application creation and applying Djapian
 #labels Deprecated
 
-= Introduction
+= Introduction =
 
 Djapian provides simple way to apply full-text search to your exist applications and new ones. It has django-inspired style of API with flexible customizations of indexation and searching.
 
-Let's go step-by-step through application creation process and discover Djapian basics.
+Let's go step-by-step through application creation process and discover Djapian basics. Before we start be sure that you have Djapian installed. If note read the complete guide to [Installation].
 
-= Sample application
+= Sample application =
 
 Assume that we what to create another one bog application. It will have some basic entities such as post, post category and comments. Represent each of this entities with its own Django models:
 
@@ -39,7 +39,7 @@ class Comment(models.Model):
 
 And as every well crafted blog we want to add flexible search mechanism. For this purpose we will use Djapian.
 
-= Creating indexer
+= Creating indexer =
 
 First step is to describe how will your search indexes represent blog models. For that we have to write some classes derived from `djapian.Indexer` with index definitions and that ad it to global or our custom _index space_.  
 
@@ -61,6 +61,7 @@ class PostIndexer(Indexer):
     fields = ['text']
     tags = [
         ('title', 'title'),
+        ('headline', 'headline'),
     ]
     
 space.add_index(Post, PostIndexer)
@@ -74,13 +75,19 @@ class CommentIndexer(Indexer):
    ]
 
 space.add_index(Comment, CommentIndexer)
+}}}
 
+To complete `Indexer` class reference read - IndexerClass.
+
+The great feature provided by Djapian - `CompositeIndexer`. This type of indexer allows you to make search queries to multiple indexes at one and get consistent result raking. For our blog application we join all tree just created indexer for composite - `blog_indexer`:
+ 
+{{{
 blog_indexer = CompositeIndexer(Category.indexer, Post.indexer, Comment.indexer)
 }}}
 
-= Initial data and index check
+= Initial data and index check =
 
-= Writing search view
+= Writing search view =
 
 {{{
 MODEL_CHOICES = [
@@ -91,9 +98,9 @@ MODEL_CHOICES = [
 class SearchForm(forms.Form):
     query = forms.CharField(required=True)
     model = forms.ChoiceField(choices=MODEL_CHOICES, required=False)
-    category = forms.ModelChoiceField(queryset=Category.obejcts.all(), required=False)
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
 
-    def do_seach(self):
+    def do_search(self):
         assert(self.is_valid())
         
         query = self.cleaned_data['query']
@@ -101,7 +108,7 @@ class SearchForm(forms.Form):
         category = self.cleaned_data['category']
         
         if not model:
-            indexer = blog_indxer
+            indexer = blog_indexer
         else:
             indexer = model.indexer
             
@@ -128,7 +135,7 @@ def search(request):
            
 }}}
 
-= Search results template
+= Search results template =
 
 {{{
 <form action='./' method='GET'>
@@ -140,12 +147,13 @@ def search(request):
   <h2>Search results:</h2>
   <ol>
     {% for hit in results %}
-      <li>{{ hit.instance }}- {{ hit.percent }} math</li>
+      <li>{{ hit.instance }}- {{ hit.percent }} match</li>
     {% endfor %}
   </ol>
 {% endif %}
 
 }}}
 
-= Adding pagination
+= Adding pagination =
 
+= Conclusion =
