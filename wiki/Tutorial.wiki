@@ -1,13 +1,13 @@
 #summary Tutorial with example application creation and applying Djapian
 #labels Deprecated
 
-= Introduction =
+== Introduction ==
 
 Djapian provides simple way to apply full-text search to your exist applications and new ones. It has django-inspired style of API with flexible customizations of indexation and searching.
 
 Let's go step-by-step through application creation process and discover Djapian basics. Before we start be sure that you have Djapian installed. If note read the complete guide to [Installation].
 
-= Sample application =
+== Sample application ==
 
 Assume that we what to create another one bog application. It will have some basic entities such as post, post category and comments. Represent each of this entities with its own Django models:
 
@@ -39,7 +39,7 @@ class Comment(models.Model):
 
 And as every well crafted blog we want to add flexible search mechanism. For this purpose we will use Djapian.
 
-= Creating indexer =
+== Creating indexer ==
 
 First step is to describe how will your search indexes represent blog models. For that we have to write some classes derived from `djapian.Indexer` with index definitions and that ad it to global or our custom _index space_.  
 
@@ -85,9 +85,9 @@ The great feature provided by Djapian - `CompositeIndexer`. This type of indexer
 blog_indexer = CompositeIndexer(Category.indexer, Post.indexer, Comment.indexer)
 }}}
 
-= Initial data and index check =
+== Initial data and index check ==
 
-= Writing search view =
+== Writing search view ==
 
 {{{
 MODEL_CHOICES = [
@@ -135,7 +135,7 @@ def search(request):
            
 }}}
 
-= Search results template =
+== Search results template ==
 
 {{{
 <form action='./' method='GET'>
@@ -154,6 +154,6 @@ def search(request):
 
 }}}
 
-= Adding pagination =
+== Adding pagination ==
 
-= Conclusion =
+== Conclusion ==
