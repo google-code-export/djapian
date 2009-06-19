@@ -13,7 +13,7 @@ Assume that we what to create another one bog application. It will have some bas
 
 {{{
 class Category(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, primary_key=True)
     
     def __unicode__(self):
         return self.name
@@ -89,6 +89,8 @@ blog_indexer = CompositeIndexer(Category.indexer, Post.indexer, Comment.indexer)
 
 == Writing search view ==
 
+And now when we make all preparations we can write our search logic. For more decoupling let's encapsulate querying of indexers into custom search form:
+
 {{{
 MODEL_CHOICES = [
     ('post', Post),
@@ -120,6 +122,11 @@ class SearchForm(forms.Form):
         return results
 }}}
 
+Our search form accepts required search query string and optionals model and category name.
+If no model is specified search will be executed over all our indexer through composite `blog_indexer`. Otherwise search will be performed over concrete model indexer.
+
+For posts and comments we also can accept category filtration and if it exists in request filter results set by given value.
+
 {{{
 def search(request):
     results = []
@@ -137,12 +144,16 @@ def search(request):
 
 == Search results template ==
 
-{{{
-<form action='./' method='GET'>
-    {{ form.as_p }}
-    <p><input type="submit" value="Search!"/></p>
-</form>
+As you mentioned earlier we use `search.html` template for rendering search form and its result. It is very simple and predictable:
 
+{{{
+<div id="search_form">
+    <form action='./' method='GET'>
+        {{ form.as_p }}
+        <p><input type="submit" value="Search!"/></p>
+    </form>
+</div>
+<div id="results">
 {% if results %}
   <h2>Search results:</h2>
   <ol>
@@ -151,8 +162,10 @@ def search(request):
     {% endfor %}
   </ol>
 {% endif %}
-
+</div>
 }}}
+
+For the start we draw our search form with submit button and than if there are any results iterate over hits and print instance and percentage of match.
 
 == Adding pagination ==
 
