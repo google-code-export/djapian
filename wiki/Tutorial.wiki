@@ -16,6 +16,9 @@ Let's go step-by-step through application creation process and discover Djapian 
 Assume that we what to create another one bog application. It will have some basic entities such as post, post category and comments. Represent each of this entities with its own Django models:
 
 {{{
+from datetime import datetime
+from django.db import models
+
 class Category(models.Model):
     name = models.CharField(max_length=255, primary_key=True)
     
@@ -45,10 +48,11 @@ And as every well crafted blog we want to add flexible search mechanism. For thi
 
 == Creating indexers ==
 
-First step is to describe how will your search indexes represent blog models. For that we have to write some classes derived from `djapian.Indexer` with index definitions and that ad it to global or our custom _index space_.  
+First step is to describe how will your search indexes represent blog models. For that we have to write some classes derived from `djapian.Indexer` with index definitions and that ad it to global or our custom _index space_. It is recommended to store indexers definitions in `index.py` file of your application package directory (near `models.py`).
 
 Prior to all we create index for `Category` model
 {{{
+from models import *
 from djapian import space, Indexer, CompositeIndexer
 
 space.add_index(Category)
@@ -91,11 +95,36 @@ blog_indexer = CompositeIndexer(Category.indexer, Post.indexer, Comment.indexer)
 
 == Initial data and index check ==
 
+For the start we will add some categories:
+
+{{{
+>>> from blog.models import *
+>>> Category.objects.create(name='development')
+<Category: development>
+>>> Category.objects.create(name='python')
+<Category: python>
+>>> Category.objects.create(name='xapian')
+<Category: xapian>
+>>> Category.objects.create(name='djapian')
+<Category: djapian>
+}}}
+
+Than add number of posts (for the example posts content I've taken Wikipedia articles about Python, Django and Xapian):
+
+{{{
+
+}}}
+
+And comments to them:
+
 == Writing search view ==
 
 And now when we make all preparations we can write our search logic. For more decoupling let's encapsulate querying of indexers into custom search form:
 
 {{{
+from django import forms
+from models import *
+
 MODEL_CHOICES = [
     ('post', Post),
     ('comment', Comment),
