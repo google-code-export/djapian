@@ -40,7 +40,7 @@ class Movie(models.Model):
     cast = models.ManyToManyField(Person, related_name='cats_movies')
 
     def headline(self):
-        return "%s - %s" % (self.author, self.title)
+        return "%s by %s" % (self.title, self.director)
 
     def __unicode__(self):
         return self.title
@@ -53,7 +53,8 @@ And as every well crafted blog we want to add flexible search mechanism. For thi
 
 First step is to describe how will your search indexes represent blog models. For that we have to write some classes derived from `djapian.Indexer` with index definitions and that ad it to global or our custom _index space_. It is recommended to store indexers definitions in `index.py` file of your application package directory (near `models.py`).
 
-Prior to all we create index for `Studio` model
+Prior to all we create index for `Studio` model:
+
 {{{
 from models import *
 from djapian import space, Indexer, CompositeIndexer
@@ -61,68 +62,74 @@ from djapian import space, Indexer, CompositeIndexer
 space.add_index(Studio)
 }}}
 
-`space` is the global Djapian index space. Index space - the set of Djapian indexes that stores in given file system directory. Default space stores into `DJAPIAN_DATABASE_PATH` path.
+`space` is the global Djapian index space. Index space - the set of Djapian indexes that stores in given file system directory. Default space live in `DJAPIAN_DATABASE_PATH` path.
 
-As you can see we don't provide explicit Indexer definition for `Studio` model. Because of it simplicity we can register it with default generated indexer.
+As you can see we don't provide explicit `Indexer` definition for `Studio` model. Because of it simplicity we can register it with default generated indexer.
 
-For post and comments we declare custom indexers:
+For `Person` and `Movie` models we declare custom indexers:
 
 {{{
-class PostIndexer(Indexer):
-    fields = ['text']
+class MovieIndexer(Indexer):
+    fields = ['plot']
     tags = [
         ('title', 'title'),
-        ('headline', 'headline'),
+        ('director', 'director'),
+        ('release_date', 'release_date')
     ]
 
-space.add_index(Post, PostIndexer)
+space.add_index(Movie, MovieIndexer)
 
-class CommentIndexer(Indexer):
-   fields = ['text']
+class PersonIndexer(Indexer):
    tags = [
-       ('post', 'post'),
-       ('author', 'author'),
-
+       ('name', 'name'),
    ]
 
-space.add_index(Comment, CommentIndexer)
+space.add_index(Person, PersonIndexer)
 }}}
 
 To complete `Indexer` class reference read - IndexerClass.
 
-The great feature provided by Djapian - `CompositeIndexer`. This type of indexer allows you to make search queries to multiple indexes at one and get consistent result raking. For our blog application we join all tree just created indexer for composite `blog_indexer`:
+The great feature provided by Djapian - `CompositeIndexer`. This type of indexer allows you to make search queries to multiple indexes at one and get consistent result raking. For our movie info application we join all tree just created indexer for composite `complete_indexer`:
 
 {{{
-blog_indexer = CompositeIndexer(Category.indexer, Post.indexer, Comment.indexer)
+complete_indexer = CompositeIndexer(Studio.indexer, Movie.indexer, Person.indexer)
 }}}
 
 == Initial data and index check ==
 
-For the start we will add some categories:
+Now we have our models and indexers but they are useless without data. For this example I take information about six movies of Star Wars from Wikipedia. We need movies description with director, top actors and studios.
 
-{{{
->>> from blog.models import *
->>> Category.objects.create(name='development')
-<Category: development>
->>> Category.objects.create(name='python')
-<Category: python>
->>> Category.objects.create(name='xapian')
-<Category: xapian>
->>> Category.objects.create(name='djapian')
-<Category: djapian>
+When we fill the database with sample information next step it to create indexes. For initial indexes creation we have to run management command provided by Djapian called `index` with `--rebuild` flag:
+
+{[{
+./manage.py index --rebuild
 }}}
 
-Than add number of posts (for the example posts content I've taken Wikipedia articles about Python, Django and Xapian):
+That's all. Now we have indexes and can make search queries among them. For index testing and debugging Djapian has special so called "index shell". Index shell is interactive command line application. It allows you to query available index spaces and get some additional information about results and indexes.
+
+To invoke index shell there is Djapian command `indexshell`:
 
 {{{
-
+./manage.py indexshell
 }}}
 
-And comments to them:
+And then in interactive shell you can call `help` to see available commands. Simple use pattern is to select needed index with `use` command (indexed identified with special 'dotted' number) and then make test search query. I want to search about `Death Star` in movies index:
+
+{{{
+use 0.1.0
+}}}
+
+and then
+
+{{{
+query Death Star
+}}}
+
+Djapian loads index and provides result list with information about matching documents (objects).
 
 == Writing search view ==
 
-And now when we make all preparations we can write our search logic. For more decoupling let's encapsulate querying of indexers into custom search form:
+And now after all preparations we can write our search logic. For more decoupling let's encapsulate querying of indexers into custom search form:
 
 {{{
 from django import forms
@@ -233,3 +240,5 @@ And we have to update template as well:
 == Starting index daemon ==
 
 == Conclusion ==
+
+Thats all. Now you have basic knowledge about how to create Djaopian powered application. To continue Djapian exploring read the references documntation and go forward to you own usage expierence.
