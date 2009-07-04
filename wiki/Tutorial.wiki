@@ -101,8 +101,8 @@ Now we have our models and indexers but they are useless without data. For this 
 
 When we fill the database with sample information next step it to create indexes. For initial indexes creation we have to run management command provided by Djapian called `index` with `--rebuild` flag:
 
-{[{
-./manage.py index --rebuild
+{{{
+$ ./manage.py index --rebuild
 }}}
 
 That's all. Now we have indexes and can make search queries among them. For index testing and debugging Djapian has special so called "index shell". Index shell is interactive command line application. It allows you to query available index spaces and get some additional information about results and indexes.
@@ -110,65 +110,53 @@ That's all. Now we have indexes and can make search queries among them. For inde
 To invoke index shell there is Djapian command `indexshell`:
 
 {{{
-./manage.py indexshell
+$ ./manage.py indexshell
 }}}
 
 And then in interactive shell you can call `help` to see available commands. Simple use pattern is to select needed index with `use` command (indexed identified with special 'dotted' number) and then make test search query. I want to search about `Death Star` in movies index:
 
 {{{
-use 0.1.0
+>>> use 0.1.0
 }}}
 
 and then
 
 {{{
-query Death Star
+>>> query Death Star
 }}}
 
-Djapian loads index and provides result list with information about matching documents (objects).
+Djapian loads index and provides result list with information about matching documents (objects). I get something like this:
+
+{{{
+[<Hit: model=movies.Movie pk=4, percent=100 rank=0 weight=0.136068754021>, <Hit: model=movies.Movie pk=6, percent=96 rank=1 weight=0.131598432828>, <Hit: model=movies.Movie pk=3, percent=71 rank=2 weight=0.0978873037672>, <Hit: model=movies.Movie pk=5, percent=66 rank=3 weight=0.0900794241425>, <Hit: model=movies.Movie pk=2, percent=57 rank=4 weight=0.0777061715929>, <Hit: model=movies.Movie pk=1, percent=56 rank=5 weight=0.0762643075739>]
+}}}
 
 == Writing search view ==
 
-And now after all preparations we can write our search logic. For more decoupling let's encapsulate querying of indexers into custom search form:
+And now after all preparations we can write our search logic. First of all let's create our custom search form:
 
 {{{
 from django import forms
-from models import *
+from django.shortcuts import render_to_response
 
-MODEL_CHOICES = [
-    ('post', Post),
-    ('comment', Comment),
-]
+from movies.models import *
+from movies.index import complete_indexer
+
+MODEL_MAP = {
+    'studio': Studio,
+    'person': Person,
+    'movie': Movie
+}
+
+MODEL_CHOICES = [('', 'all')] + zip(MODEL_MAP.keys(), MODEL_MAP.keys())
 
 class SearchForm(forms.Form):
     query = forms.CharField(required=True)
     model = forms.ChoiceField(choices=MODEL_CHOICES, required=False)
-    category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
-
-    def do_search(self):
-        assert(self.is_valid())
-
-        query = self.cleaned_data['query']
-        model = self.cleaned_data['model']
-        category = self.cleaned_data['category']
-
-        if not model:
-            indexer = blog_indexer
-        else:
-            indexer = model.indexer
-
-        results = indexer.search(query).prefetch()
-
-        if category and model in (Post, Comment):
-            results = results.filter(category=category)
-
-        return results
 }}}
 
-Our search form accepts required search query string and optionals model and category name.
-If no model is specified search will be executed over all our indexer through composite `blog_indexer`. Otherwise search will be performed over concrete model indexer.
-
-For posts and comments we also can accept category filtration and if it exists in request filter results set by given value.
+Our search form accepts required search query string and optionals model name.
+If no model is specified("all" is chosen) search will be executed over all our indexer through composite `complete_indexer`. Otherwise search will be performed over concrete model index.
 
 {{{
 def search(request):
@@ -177,12 +165,19 @@ def search(request):
     if request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():
-            results = form.do_search()
+            query = form.cleaned_data['query']
+            model = MODEL_MAP.get(form.cleaned_data['model'])
+
+            if not model:
+                indexer = complete_indexer
+            else:
+                indexer = model.indexer
+
+            results = indexer.search(query).prefetch()
     else:
         form = SearchForm()
 
-    return render_to_response('search.html', {'results': results, 'form': form})
-
+    return render_to_response('movies/search.html', {'results': results, 'form': form})
 }}}
 
 == Search results template ==
@@ -214,16 +209,16 @@ For the start we draw our search form with submit button and than if there are a
 
 Due to Djapian's `ResultSet` object compatible with standard `Paginator` it allows you to paginate results as usual.
 
-Let's update search view to apply page number and splitting result set into pages with 10 entries on each:
+Let's update search view to apply page number and splitting result set into pages with 5 entries on each:
 
 {{{
 from django.core.paginator import Paginator
 ...
-paginator = Paginator(form.do_search(), 10)
-results = paginator.page(request.GET.get('page', 1))
+paginator = Paginator(indexer.search(query).prefetch(), 5)
+results = paginator.page(int(request.GET.get('page', 1)))
 }}}
 
-And we have to update template as well:
+And we have to update source `search.html` template as well with new name - 'paged_search.html':
 
 {{{
 ...
@@ -233,12 +228,22 @@ And we have to update template as well:
    {% endfor %}
 </ol>
 {% if results.has_next }}
-<a href="./?query={{ form.cleaned_data.query }}&page={{ results.next_page }}">Next page</a>
+<a href="./?query={{ form.cleaned_data.query }}&page={{ results.next_page_number }}">Next page</a>
 {% endif %}
 }}}
 
 == Starting index daemon ==
 
+In the lifetime of the movies application there are many cases when data will be changed: added, edited or deleted. Djapian stores change log and can update corresponding indexes with information from it.
+
+To invoke index update process we need to run `index` command:
+
+{{{
+$ ./manage.py index
+}}}
+
+For real world projects it is recommend to run this command by some time intervals with `cron` or other task scheduling software.
+
 == Conclusion ==
 
-Thats all. Now you have basic knowledge about how to create Djaopian powered application. To continue Djapian exploring read the references documntation and go forward to you own usage expierence.
+Thats all. Now you have basic knowledge about how to create Djapian powered application. To continue Djapian exploring read the references documentation and go forward to you own usage experience.
