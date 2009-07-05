@@ -9,7 +9,7 @@
  * IndexersAutodiscovery
  * RunningIndexShell
  * RunningTheIndexer
- * SpellingCorrection
+ * SpellingCorrections
  
 === References ===
 
