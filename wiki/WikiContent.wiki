@@ -1,16 +1,21 @@
 #labels Deprecated
-=== Step-by-step ===
+=== Introduction ===
 
  * [Installation]
- * SettingUp
- * SettingUpModels
- * RunningTheIndexer
- * [Searching]
+ * [Tutorial]
+ 
+=== Usage ===
 
+ * IndexersAutodiscovery
+ * RunningIndexShell
+ * RunningTheIndexer
+ * SpellingCorrection
+ 
 === References ===
 
  * [Settings]
  * IndexerClass
+ * [Searching]
  * [Stemming]
 
 === Release Notes ===

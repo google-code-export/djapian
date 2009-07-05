@@ -1,5 +1,5 @@
 #summary Tutorial for applying Djapian on example application
-#labels Deprecated
+#labels Featured
 
 == Content ==
 
@@ -10,6 +10,19 @@
 Djapian provides simple way to apply full-text search to your exist applications and new ones. It has django-inspired style of API with flexible customizations of indexation and searching.
 
 Let's go step-by-step through application creation process and discover Djapian basics. Before we start be sure that you have Djapian installed. If no read the complete guide to [Installation].
+
+== Project setup ==
+
+Now we create the project with `django-admin.py startproject test_project`. Then make some initial settings in `settings.py`:
+
+ * Add `djapian` into your `INSTALLED_APPS`
+ * Set `DJAPIAN_DATABASE_PATH`:
+ 
+ {{{
+ DJAPIAN_DATABASE_PATH = './djapian_spaces/'
+ }}}
+ 
+And run `./manage.py syncdb` to created needed DB tables.
 
 == Sample application ==
 
@@ -56,10 +69,11 @@ First step is to describe how will your search indexes represent blog models. Fo
 Prior to all we create index for `Studio` model:
 
 {{{
-from models import *
 from djapian import space, Indexer, CompositeIndexer
 
-space.add_index(Studio)
+from movies.models import *
+
+space.add_index(Studio, attach_as='indexer')
 }}}
 
 `space` is the global Djapian index space. Index space - the set of Djapian indexes that stores in given file system directory. Default space live in `DJAPIAN_DATABASE_PATH` path.
@@ -77,14 +91,14 @@ class MovieIndexer(Indexer):
         ('release_date', 'release_date')
     ]
 
-space.add_index(Movie, MovieIndexer)
+space.add_index(Movie, MovieIndexer, attach_as='indexer')
 
 class PersonIndexer(Indexer):
    tags = [
        ('name', 'name'),
    ]
 
-space.add_index(Person, PersonIndexer)
+space.add_index(Person, PersonIndexer, attach_as='indexer')
 }}}
 
 To complete `Indexer` class reference read - IndexerClass.
@@ -97,7 +111,7 @@ complete_indexer = CompositeIndexer(Studio.indexer, Movie.indexer, Person.indexe
 
 == Initial data and index check ==
 
-Now we have our models and indexers but they are useless without data. For this example I take information about six movies of Star Wars from Wikipedia. We need movies description with director, top actors and studios.
+Now we have our models and indexers but they are useless without data. For this example I take information about six movies of "Star Wars" from [http://wikipedia.org/ Wikipedia]. We need movies description with director, top actors and studios.
 
 When we fill the database with sample information next step it to create indexes. For initial indexes creation we have to run management command provided by Djapian called `index` with `--rebuild` flag:
 
@@ -119,7 +133,7 @@ And then in interactive shell you can call `help` to see available commands. Sim
 >>> use 0.1.0
 }}}
 
-and then
+and then:
 
 {{{
 >>> query Death Star
@@ -128,7 +142,9 @@ and then
 Djapian loads index and provides result list with information about matching documents (objects). I get something like this:
 
 {{{
-[<Hit: model=movies.Movie pk=4, percent=100 rank=0 weight=0.136068754021>, <Hit: model=movies.Movie pk=6, percent=96 rank=1 weight=0.131598432828>, <Hit: model=movies.Movie pk=3, percent=71 rank=2 weight=0.0978873037672>, <Hit: model=movies.Movie pk=5, percent=66 rank=3 weight=0.0900794241425>, <Hit: model=movies.Movie pk=2, percent=57 rank=4 weight=0.0777061715929>, <Hit: model=movies.Movie pk=1, percent=56 rank=5 weight=0.0762643075739>]
+[<Hit: model=movies.Movie pk=4, percent=100 rank=0 weight=0.136068754021>, <Hit: model=movies.Movie pk=6, percent=96 rank=1 weight=0.131598432828>, 
+<Hit: model=movies.Movie pk=3, percent=71 rank=2 weight=0.0978873037672>, <Hit: model=movies.Movie pk=5, percent=66 rank=3 weight=0.0900794241425>, 
+<Hit: model=movies.Movie pk=2, percent=57 rank=4 weight=0.0777061715929>, <Hit: model=movies.Movie pk=1, percent=56 rank=5 weight=0.0762643075739>]
 }}}
 
 == Writing search view ==
