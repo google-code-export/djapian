@@ -3,14 +3,14 @@
 
  * [Installation]
  * [Tutorial]
- 
+
 === Usage ===
 
  * IndexersAutodiscovery
  * RunningIndexShell
  * RunningTheIndexer
  * SpellingCorrections
- 
+
 === References ===
 
  * [Settings]
@@ -20,6 +20,7 @@
 
 === Release Notes ===
 
+ * [ChangesInVersion020204 2.2.4]
  * [ChangesInVersion020203 2.2.3]
  * [ChangesInVersion020202 2.2.2]
  * [ChangesInVersion020201 2.2.1]
