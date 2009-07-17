@@ -9,7 +9,7 @@ To get corrected query string you have to call `search` and then enable spelling
 Here is a code example:
 
 {{{
->>> result = Entry.indexer.search("texte").spell_correctio()
+>>> result = Entry.indexer.search("texte").spell_correction()
 >>> result.get_corrected_query_string()
 text
 }}}
