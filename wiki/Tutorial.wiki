@@ -111,7 +111,7 @@ complete_indexer = CompositeIndexer(Studio.indexer, Movie.indexer, Person.indexe
 
 == Initial data and index check ==
 
-Now we have our models and indexers but they are useless without data. For this example I take information about six movies of "Star Wars" from [http://wikipedia.org/ Wikipedia]. We need movies description with director, top actors and studios.
+Now we have our models and indexers but they are useless without data. For this example I take information about six movies of "Star Wars" from [http://wikipedia.org/ Wikipedia]. We need movies description with director, top actors and studio info.
 
 When we fill the database with sample information next step it to create indexes. For initial indexes creation we have to run management command provided by Djapian called `index` with `--rebuild` flag:
 
