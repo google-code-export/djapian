@@ -147,9 +147,24 @@ Djapian loads index and provides result list with information about matching doc
 <Hit: model=movies.Movie pk=2, percent=57 rank=4 weight=0.0777061715929>, <Hit: model=movies.Movie pk=1, percent=56 rank=5 weight=0.0762643075739>]
 }}}
 
+== Insuring indexers loading ==
+
+Before writing views we must ensure that defined indexers are loaded and initialized while Django serving web requests. Djapian has helper function called `load_indexes` that loads `indexer.py` in every installed application.
+
+The best place to load indexers is project's `urls.py`. Just add this lines:
+
+{{{
+import djapian
+
+djapian.load_indexes()
+
+# Your url patterns declarations:
+# ...
+}}}
+
 == Writing search view ==
 
-And now after all preparations we can write our search logic. First of all let's create our custom search form:
+And now after all preparations we a ready write our search logic. First of all let's create our custom search form:
 
 {{{
 from django import forms
