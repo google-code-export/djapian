@@ -17,11 +17,11 @@ Now we create the project with `django-admin.py startproject test_project`. Then
 
  * Add `djapian` into your `INSTALLED_APPS`
  * Set `DJAPIAN_DATABASE_PATH`:
- 
+
  {{{
  DJAPIAN_DATABASE_PATH = './djapian_spaces/'
  }}}
- 
+
 And run `./manage.py syncdb` to created needed DB tables.
 
 == Sample application ==
@@ -142,8 +142,8 @@ and then:
 Djapian loads index and provides result list with information about matching documents (objects). I get something like this:
 
 {{{
-[<Hit: model=movies.Movie pk=4, percent=100 rank=0 weight=0.136068754021>, <Hit: model=movies.Movie pk=6, percent=96 rank=1 weight=0.131598432828>, 
-<Hit: model=movies.Movie pk=3, percent=71 rank=2 weight=0.0978873037672>, <Hit: model=movies.Movie pk=5, percent=66 rank=3 weight=0.0900794241425>, 
+[<Hit: model=movies.Movie pk=4, percent=100 rank=0 weight=0.136068754021>, <Hit: model=movies.Movie pk=6, percent=96 rank=1 weight=0.131598432828>,
+<Hit: model=movies.Movie pk=3, percent=71 rank=2 weight=0.0978873037672>, <Hit: model=movies.Movie pk=5, percent=66 rank=3 weight=0.0900794241425>,
 <Hit: model=movies.Movie pk=2, percent=57 rank=4 weight=0.0777061715929>, <Hit: model=movies.Movie pk=1, percent=56 rank=5 weight=0.0762643075739>]
 }}}
 
@@ -209,6 +209,16 @@ def search(request):
         form = SearchForm()
 
     return render_to_response('movies/search.html', {'results': results, 'form': form})
+}}}
+
+After view function is ready we must map it some url in project's `urls.py`:
+{{{
+
+    from movies.views import search
+
+    #...
+
+    url(r'^search/$', search, name='search'),
 }}}
 
 == Search results template ==
