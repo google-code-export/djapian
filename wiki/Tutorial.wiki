@@ -162,6 +162,8 @@ djapian.load_indexes()
 # ...
 }}}
 
+*Warning:* due to python module importing hell it is strongly recommended to use one "import path convention". If you use project name in your import statements use it everywhere. Otherwise if you don't write project name in the beginning of import path don't do it also everywhere. Mixing of conventions will produce highly strange bugs and difficulties. I prefer second convention - all paths have no project name.
+
 == Writing search view ==
 
 And now after all preparations we a ready write our search logic. First of all let's create our custom search form:
@@ -213,10 +215,9 @@ def search(request):
 
 After view function is ready we must map it some url in project's `urls.py`:
 {{{
+from movies.views import search
 
-    from movies.views import search
-
-    #...
+# ...
 
     url(r'^search/$', search, name='search'),
 }}}
