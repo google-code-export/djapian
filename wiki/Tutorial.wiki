@@ -269,7 +269,7 @@ And we have to update source `search.html` template as well with new name - 'pag
        <li>{{ hit.instance }}- {{ hit.percent }} match</li>
    {% endfor %}
 </ol>
-{% if results.has_next }}
+{% if results.has_next %}
 <a href="./?query={{ form.cleaned_data.query }}&page={{ results.next_page_number }}">Next page</a>
 {% endif %}
 }}}
