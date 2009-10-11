@@ -1,4 +1,5 @@
 #summary 2.0 version release notes
+#labels Deprecated
 
 == Changes in Djapian 2.0 ==
 
@@ -10,7 +11,7 @@
  * Speed improvements of index rebuild
  * More universal `Indexers` - allow index different modules - [IndexerClass]
  * indexers auto discovery - [IndexersAutodiscovery]
-  
+
 === Major bug fixes ===
 
  * Result by field ordering

@@ -1,4 +1,5 @@
 #summary 2.2.2 version release notes
+#labels Deprecated
 
 == Changes in Djapian 2.2.2 ==
 
