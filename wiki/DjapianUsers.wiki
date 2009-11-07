@@ -7,4 +7,4 @@
 
 = Applications =
 
- * [http://djangobb.com/ DjangoBB] - full-featured forum engine on Django an Djapian
+ * [http://djangobb.org/ DjangoBB] - full-featured forum engine on Django anв Djapian
