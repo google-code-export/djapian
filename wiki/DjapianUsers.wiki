@@ -1,0 +1,10 @@
+#summary list of sites and applications that use Djapian.
+#labels Deprecated
+
+= Sites =
+
+ * Blog http://webnewage.org/
+
+= Applications =
+
+ * [http://djangobb.com/ DjangoBB] - full-featured forum engine on Django an Djapian
