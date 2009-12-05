@@ -1,0 +1,9 @@
+#summary 2.3.1 version release notes
+#labels Deprecated
+
+== Changes in Djapian 2.3.1 ==
+
+=== Major bug fixes ===
+
+ * Fixed index operation processing with incorrect action loakup and transaction management. Thanks to Jonas Nockert.
+
