@@ -136,7 +136,7 @@ And then in interactive shell you can call `help` to see available commands. Sim
 and then:
 
 {{{
->>> query Death Star
+>>> query "Death Star" 10
 }}}
 
 Djapian loads index and provides result list with information about matching documents (objects). I get something like this:
