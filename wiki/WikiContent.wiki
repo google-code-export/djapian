@@ -20,6 +20,7 @@
 
 === Release Notes ===
 
+ * [ChangesInVersion020301 2.3.1]
  * [ChangesInVersion0203 2.3]
  * [ChangesInVersion020204 2.2.4]
  * [ChangesInVersion020203 2.2.3]

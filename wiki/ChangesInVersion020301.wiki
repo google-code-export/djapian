@@ -1,5 +1,5 @@
 #summary 2.3.1 version release notes
-#labels Deprecated
+#labels Featured
 
 == Changes in Djapian 2.3.1 ==
 
