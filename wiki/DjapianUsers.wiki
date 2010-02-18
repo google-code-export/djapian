@@ -4,7 +4,8 @@
 = Sites =
 
  * Blog http://webnewage.org/
+ * Promo-site http://soloparfum.ru
 
 = Applications =
 
- * [http://djangobb.org/ DjangoBB] - full-featured forum engine on Django anв Djapian
+ * [http://djangobb.org/ DjangoBB] - full-featured forum engine on Django with Djapian search
