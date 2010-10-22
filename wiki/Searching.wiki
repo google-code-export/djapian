@@ -39,7 +39,7 @@ Returning some data immidietly:
 Result set is Paginator compartible, so you can easy paginte result rows:
 
 {{{
-from django,core.paginator import Paginator
+from django.core.paginator import Paginator
 
 page = Paginator(resultset, 10).page(2)
 }}}
