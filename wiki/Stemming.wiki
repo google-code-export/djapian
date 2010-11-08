@@ -87,7 +87,7 @@ You can specify the language to use when searching the index with the {{{stemmin
 {{{
 from myappl.models import search_index
 
-results = search_index.search("Some search query...")
+results = search_index.search("Some search query...").stemming('en')
 }}}
 
 ==== Relation with the {{{DJAPIAN_STEMMING_LANG}}} setting ====
@@ -98,7 +98,7 @@ results = search_index.search("Some search query...")
 || Not defined (None) || Defined to 'multi' || The query will not be stemmed. ||
 || Not defined (None) || Not defined or None || The query will not be stemmed. ||
 
-In other words, when using a single language for stemming ({{{DJAPIAN_STEMMING_LANG != "multi" }}}), the stemming_lang parameter in the search function is not required.
+In other words, when using a single language for stemming ({{{DJAPIAN_STEMMING_LANG != "multi" }}}), the {{{stemming()}}} call is not required.
 
 = Implementation notes =
 
