@@ -12,7 +12,7 @@ resultset = Entry.indexer.search("foobar")
 
 According to Xapian query language you can search by concreate tags(like "title:foo") and with boolean operators (like "foo OR bar").
 
-=== ResultSet object ===
+=== `ResultSet` object ===
 
 `search` returns a ResultSet object that represent lazy qurty to Xapian index database.
 
@@ -46,7 +46,7 @@ page = Paginator(resultset, 10).page(2)
 
 == Hit object ===
 
-Each `ResultSet` row is Hit object. This object holds match information:
+Each `ResultSet` row is `Hit` object. This object holds match information:
  
  * `precent`
  * `rank`
