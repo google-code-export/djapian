@@ -20,9 +20,9 @@ ResultSet behaves like django `QuerySet` - it performs real query only when data
 
 ResultSet has some additional method that can customize query options.
 
-Returbinig ResultSet method:
+Returbinig `ResultSet` method:
 
- * `prefetch()` - 
+ * `prefetch()` - retrieves all linked objects to each results row.
  * `flags(flag)` - 
  * `order_by(tag_name)`
  * slicing with `[start:end]`
@@ -36,7 +36,7 @@ Returning some data immidietly:
  
 === Paginator ===
  
-Result set is Paginator compartible, so you can easy paginte result rows:
+Result set is `Paginator`-compartible, so you can easy paginte result rows:
 
 {{{
 from django.core.paginator import Paginator
@@ -46,7 +46,7 @@ page = Paginator(resultset, 10).page(2)
 
 == Hit object ===
 
-Each ResultSet row is Hit object. This object holds match information:
+Each `ResultSet` row is Hit object. This object holds match information:
  
  * `precent`
  * `rank`
