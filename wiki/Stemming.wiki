@@ -92,7 +92,7 @@ results = search_index.search("Some search query...")
 
 ==== Relation with the {{{DJAPIAN_STEMMING_LANG}}} setting ====
 
-|| *{{{stemming_lang}}} (parameter of {{{search()}}})*  || *{{{DJAPIAN_STEMMING_LANG}}} (in {{{settings.py}}})* || *Result* ||
+|| *{{{lang}}} (parameter of {{{stemming()}}}) {{ResultSet}}'s method*  || *{{{DJAPIAN_STEMMING_LANG}}} (in {{{settings.py}}})* || *Result* ||
 || Defined || Defined or not defined || The query will be stemmed according to the value of {{{stemming_lang}}}. ||
 || Not defined (None) || Defined to a valid language (ex: 'en', 'fr'; something else than 'multi') || The query will be stemmed according to the value of {{{DJAPIAN_STEMMING_LANG}}}. ||
 || Not defined (None) || Defined to 'multi' || The query will not be stemmed. ||
