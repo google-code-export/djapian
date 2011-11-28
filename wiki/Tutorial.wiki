@@ -149,7 +149,7 @@ Djapian loads index and provides result list with information about matching doc
 
 == Insuring indexers loading ==
 
-Before writing views we must ensure that defined indexers are loaded and initialized while Django serving web requests. Djapian has helper function called `load_indexes` that loads `indexer.py` in every installed application.
+Before writing views we must ensure that defined indexers are loaded and initialized while Django serving web requests. Djapian has helper function called `load_indexes` that loads `index.py` in every installed application.
 
 The best place to load indexers is project's `urls.py`. Just add this lines:
 
